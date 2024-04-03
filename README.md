@@ -6,7 +6,7 @@ Source code and documentation for Life Science Technologies Project Course B, Aa
 ## Setup
 
 ## Authors
-Alexandra Gorbonos
-Alireza Tajmirriahi
-Mohammad Sherafati
+Alexandra Gorbonos,
+Alireza Tajmirriahi,
+Mohammad Sherafati,
 Salma Rachidi
