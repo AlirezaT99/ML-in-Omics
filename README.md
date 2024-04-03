@@ -19,7 +19,7 @@ pip install -r requirements.txt
 ### Analysis setup
 First, the configuration for the study must be available in the [configuration file](./utils/consts.py). The config for each study looks something like this:
 
-```json
+```python
 'mars_ibs_lr': {
     'path': 'MARS_IBS_2020',
     'preprocessor': FeatureExtraction.PC,
@@ -42,6 +42,23 @@ Then, you can run the analysis using the following command and arguments:
 ```bash
 python main.py --path "path/to/data" --study "mars_ibs_lr" --output "../output" --debug True
 ```
+
+## Analysis Description
+### Goals
+- Integration of Metabolomics and Metagenomics data for more accurate biomarker identification
+- Comparison of Metabolomics and Metagenomics in disease status prediction
+- 
+
+### Summary
+| Aspect | Value|
+|:-----------------:|:------------------:|
+|       Model       |Logisticregression, RandomForest, ML-based classifiers (future)|
+|Feature Engineering| PCA, LDA, $\chi^2$ |
+
+### Data
+
+### Results
+
 
 ## Authors
 Alexandra Gorbonos
