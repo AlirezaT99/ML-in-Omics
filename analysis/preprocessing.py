@@ -32,6 +32,27 @@ class Chi2(IFeatureExtractor):
         k = kwargs.get('k', 100)
         indices = np.argsort(chi2_stats)[::-1][:k]
         return X[:, indices]
+    
+class ttest(IFeatureExtractor):
+    def fit_transform(self, X, y, **kwargs):
+        sfeatures = find_significant_features(X, y, kwargs.get(alpha, 1e-4))
+        return X[sfeatures]
+
+    def find_significant_features(feature_table, class_table, alpha):
+        classes = class_table['Study.Group'].unique()
+        significant_features = []
+
+        for feature in feature_table.columns:
+            class_1_values = feature_table[class_table['Study.Group'] == classes[0]][feature]
+            class_2_values = feature_table[class_table['Study.Group'] == classes[1]][feature]
+
+            # Perform t-test
+            t_stat, p_value = stats.ttest_ind(class_1_values, class_2_values)
+
+            if p_value < alpha:  # You can adjust the significance level as needed
+                significant_features.append(feature)
+
+        return significant_features
 
 
 class DataCleaning:
