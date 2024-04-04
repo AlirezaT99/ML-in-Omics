@@ -1,12 +1,12 @@
-from ..analysis.preprocessing import FeatureExtraction
-from ..analysis.models import Models
+from ..analysis.preprocessing import *
+from ..analysis.models import *
 
 DEFAULT_DATA_PATH = 'data/'
 OUTPUT_PATH = 'output/'
 OUTPUT_LOG_FILE = 'log.txt'
 DEFAULT_DEBUG_MODE = False
 
-MTB_NA_THRESHOLD = 0.90
+NA_THRESHOLD = 0.90
 RANDOM_STATE = 42
 KFOLD_SPLITS = 5
 DEFAULT_SCORING = 'f1_weighted'
@@ -14,9 +14,9 @@ DEFAULT_SCORING = 'f1_weighted'
 ANALYSIS_PARAMS = {
     'mars_ibs_lr': {
         'path': 'MARS_IBS_2020',
-        'preprocessor': FeatureExtraction.PC,
+        'preprocessor': PC,
         'preproc_kwargs': {'var': 0.9},
-        'classifier': Models.LogisticRegression,
+        'classifier': LogisticRegression,
         'classifier_param_grid': {
             'penalty': ['l1', 'l2'],
             'C': [0.001, 0.01, 0.1, 1, 10, 100],
