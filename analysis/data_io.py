@@ -22,5 +22,5 @@ class DataWriter:
             os.makedirs(path)
         if os.path.exists(f"{path}/{file_name}"):
             file_name += "_1"
-        with open(f"{path}/{file_name}.{extension}", "w") as f:
+        with open(f"{path}{file_name}.{extension}", "w") as f:
             f.write(content)
