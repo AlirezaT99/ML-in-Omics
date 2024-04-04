@@ -2,13 +2,11 @@ from abc import ABC, abstractmethod
 
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC, LinearSVC
-from sklearn.model_selection import StratifiedKFold, GridSearchCV, cross_val_predict
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression as LR
 from sklearn.neural_network import MLPClassifier
 
 
-class IMetaModel(ABC):
+class IModel(ABC):
 	def __init__(self):
 		self._model = None
 
@@ -21,7 +19,7 @@ class IMetaModel(ABC):
 		raise NotImplementedError
 
 
-class RF(IMetaModel):
+class RF(IModel):
 	def train_model(self, X_train, y_train, model_kwargs):
 		fixed_hyperparams = {
 			'random_state': 10,
@@ -35,6 +33,6 @@ class RF(IMetaModel):
 		return self._model.predict(X_test)
 
 
-class LogisticRegression(IMetaModel):
-	model = LogisticRegression()
-	pass  # TODO
+class LogisticRegression:
+    def __init__(self):
+        return LR()
