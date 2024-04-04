@@ -13,6 +13,7 @@ class DataReader:
         # species = pd.read_table(f"{path}/species.tsv")
         return genera, metadata, mtb
 
+
 class DataWriter:
     @staticmethod
     def write_files(path, file_name, content):

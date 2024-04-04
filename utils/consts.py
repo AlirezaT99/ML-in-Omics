@@ -1,5 +1,5 @@
-from ..analysis.preprocessing import *
-from ..analysis.models import *
+from analysis.preprocessing import *
+from analysis.models import *
 
 DEFAULT_DATA_PATH = 'data/'
 OUTPUT_PATH = 'output/'
@@ -13,7 +13,7 @@ DEFAULT_SCORING = 'f1_weighted'
 
 ANALYSIS_PARAMS = {
     'mars_ibs_lr': {
-        'path': 'MARS_IBS_2020',
+        'dir': 'MARS_IBS_2020',
         'preprocessor': PC,
         'preproc_kwargs': {'var': 0.9},
         'classifier': LogisticRegression,
