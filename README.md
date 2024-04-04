@@ -22,9 +22,9 @@ First, the configuration for the study must be available in the [configuration f
 ```python
 'mars_ibs_lr': {
     'path': 'MARS_IBS_2020',
-    'preprocessor': FeatureExtraction.PC,
+    'preprocessor': PC,
     'preproc_kwargs': {'var': 0.9},
-    'classifier': Models.LogisticRegression,
+    'classifier': LogisticRegression,
     'classifier_param_grid': {
         'penalty': ['l1', 'l2'],
         'C': [0.001, 0.01, 0.1, 1, 10, 100],
