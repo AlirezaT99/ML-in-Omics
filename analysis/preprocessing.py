@@ -37,6 +37,53 @@ class Chi2(IFeatureExtractor):
         indices = np.argsort(chi2_stats)[::-1][:k]
         return X[:, indices]
 
+class ttest(IFeatureExtractor):
+    def fit_transform(self, X, y, **kwargs):
+        sfeatures = find_significant_features(X, y, kwargs.get(alpha, 1e-4))
+        return X[sfeatures]
+
+    def find_significant_features(feature_table, class_table, alpha):
+        classes = class_table['Study.Group'].unique()
+        significant_features = []
+
+        for feature in feature_table.columns:
+            class_1_values = feature_table[class_table['Study.Group'] == classes[0]][feature]
+            class_2_values = feature_table[class_table['Study.Group'] == classes[1]][feature]
+
+            # Perform t-test
+            t_stat, p_value = stats.ttest_ind(class_1_values, class_2_values)
+
+            if p_value < alpha:  # You can adjust the significance level as needed
+                significant_features.append(feature)
+
+        return significant_features
+
+class oneway(IFeatureExtractor):
+
+    def fit_transform(self, X, y, **kwargs):
+        sfeatures = find_significant_features(X, y, kwargs.get(alpha, 1e-4))
+        return X[sfeatures]
+
+    def find_significant_features(feature_table, class_table, alpha):
+        # Assuming class_table has a column 'class' indicating the classes
+        classes = class_table['Study.Group'].unique()
+        significant_features = []
+
+        for feature in feature_table.columns:
+            # List to store values for each class
+            class_values = []
+            for class_label in classes:
+                class_values.append(feature_table[class_table['Study.Group'] == class_label][feature])
+
+            # Perform ANOVA test
+            f_stat, p_value = stats.f_oneway(*class_values)
+
+            # Check significance (e.g., p-value < 0.05)
+            if p_value < alpha:  # You can adjust the significance level as needed
+                significant_features.append(feature)
+                print(p_value)
+
+        return significant_features
 
 class DataCleaning:
     @staticmethod
