@@ -1,6 +1,11 @@
 from analysis.preprocessing import *
 from analysis.models import *
 
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.neural_network import MLPClassifier
+
 DEFAULT_DATA_PATH = 'data/'
 OUTPUT_PATH = 'output/'
 OUTPUT_LOG_FILE = 'log.txt'

@@ -2,7 +2,7 @@ import os.path
 
 import pandas as pd
 from sklearn.manifold import TSNE
-from sklearn.metrics import accuracy_score, auc, f1_score, precision_score, recall_score, roc_auc_score
+from sklearn.metrics import *
 from sklearn.model_selection import GridSearchCV, KFold
 
 import matplotlib.pyplot as plt
@@ -40,60 +40,66 @@ class Analysis:
         self.log(f"Group distribution: {metadata['Study.Group'].value_counts()}")
 
         # Genera
-        features = self.preprocessor().fit_transform(genera[:, 1:], metadata["Study.Group"], **self.preproc_kwargs)
+        features = self.preprocessor().fit_transform(genera.values[:, 1:], metadata["Study.Group"],
+                                                     **self.preproc_kwargs)
 
         kfold = KFold(n_splits=KFOLD_SPLITS, shuffle=True, random_state=RANDOM_STATE)
         cv = GridSearchCV(estimator=self.model(), param_grid=self.classifier_param_grid, cv=kfold,
-                          scoring=DEFAULT_SCORING) \
-            .fit(features, metadata["Study.Group"])
+                          scoring=DEFAULT_SCORING)
+        cv.fit(features, metadata["Study.Group"])
 
         self.log(f"Best hyperparameters: {cv.best_params_}")
         self.log(f"Best score: {cv.best_score_}")
 
         best_model = cv.best_estimator_
-        y_pred = best_model.predict(features)
         self.log(f'Best model: {best_model}')
 
+        if not os.path.exists(OUTPUT_PATH):
+            os.makedirs(OUTPUT_PATH)
         self.visualize_embeddings(genera, metadata, mtb)
-        self.evaluate_performance(metadata["Study.Group"], y_pred, metadata)
+        self.evaluate_performance(best_model, features, metadata["Study.Group"], metadata)
 
-    def evaluate_performance(self, y_true, y_pred, metadata):
+    def evaluate_performance(self, model, X, y_true, metadata):
+        is_binary = len(metadata["Study.Group"].unique()) == 2
+        score_avg = "binary" if is_binary else "weighted"
+        y_pred = model.predict(X)
+
         accuracy = accuracy_score(y_true, y_pred)
-        precision = precision_score(y_true, y_pred)
-        recall = recall_score(y_true, y_pred)
-        f1 = f1_score(y_true, y_pred)
-        roc_auc = roc_auc_score(y_true, y_pred)
-        confusion_matrix = confusion_matrix(y_true, y_pred)
-        classification_report = classification_report(y_true, y_pred)
-        roc_curve = roc_curve(y_true, y_pred)
-        precision_recall_curve = precision_recall_curve(y_true, y_pred)
+        precision = precision_score(y_true, y_pred, average=score_avg)
+        recall = recall_score(y_true, y_pred, average=score_avg)
+        f1 = f1_score(y_true, y_pred, average=score_avg)
+        roc_auc = roc_auc_score(y_true=y_true, y_score=model.predict_proba(X), multi_class='ovr', average=score_avg)
+
+        confusion_mat = confusion_matrix(y_true, y_pred)
+        clf_report = classification_report(y_true, y_pred)
 
         self.log(f"Accuracy: {accuracy}")
         self.log(f"Precision: {precision}")
         self.log(f"Recall: {recall}")
         self.log(f"F1: {f1}")
         self.log(f"ROC AUC: {roc_auc}")
-        self.log(f"Confusion matrix: {confusion_matrix}")
-        self.log(f"Classification report: {classification_report}")
-        self.log(f"ROC curve: {roc_curve}")
-        self.log(f"Precision-recall curve: {precision_recall_curve}")
+        self.log(f"Confusion matrix:\n{confusion_mat}")
+        self.log(f"Classification report:\n{clf_report}")
 
-        fpr, tpr, _ = roc_curve(y_true, y_pred)
-        roc_auc = auc(fpr, tpr)
-        plt.plot(fpr, tpr, color='darkorange', lw=2, label='ROC curve (area = %0.2f)' % roc_auc)
-        plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True Positive Rate')
-        plt.title('Receiver Operating Characteristic (ROC) Curve')
-        plt.legend(loc="lower right")
-        plt.savefig(f'{OUTPUT_PATH}{self.study}-roc.pdf')
+        if is_binary:
+            fpr, tpr, _ = roc_curve(y_true, y_pred)
+            roc_auc = auc(fpr, tpr)
+            plt.plot(fpr, tpr, color='darkorange', lw=2, label='ROC curve (area = %0.2f)' % roc_auc)
+            plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+            plt.xlabel('False Positive Rate')
+            plt.ylabel('True Positive Rate')
+            plt.title('Receiver Operating Characteristic (ROC) Curve')
+            plt.legend(loc="lower right")
+            plt.savefig(f'{OUTPUT_PATH}{self.study}-roc.pdf')
 
-        plt.plot(precision_recall_curve[1], precision_recall_curve[0], marker='.')
-        plt.xlabel('Recall')
-        plt.ylabel('Precision')
-        plt.title('Precision-Recall Curve')
-        plt.grid(True)
-        plt.savefig(f'{OUTPUT_PATH}{self.study}-prc.pdf')
+        if is_binary:
+            prec_rec_curve = precision_recall_curve(y_true, y_pred)
+            plt.plot(prec_rec_curve[1], prec_rec_curve[0], marker='.')
+            plt.xlabel('Recall')
+            plt.ylabel('Precision')
+            plt.title('Precision-Recall Curve')
+            plt.grid(True)
+            plt.savefig(f'{OUTPUT_PATH}{self.study}-prc.pdf')
 
         DataWriter.write_files(OUTPUT_PATH, f"{self.study}-{OUTPUT_LOG_FILE}", self._log_text)
 
