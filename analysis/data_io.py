@@ -19,8 +19,7 @@ class DataWriter:
     def write_files(path, file_name, content):
         extension = file_name.split('.')[-1]
         file_name = file_name.replace(f".{extension}", "")
-        if not os.path.exists(path):
-            os.makedirs(path)
+
         if os.path.exists(f"{path}/{file_name}"):
             file_name += "_1"
         with open(f"{path}{file_name}.{extension}", "w") as f:
