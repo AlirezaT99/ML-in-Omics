@@ -1,0 +1,32 @@
+Genera shape: (440, 2896)
+Metadata shape: (440, 6)
+MTB shape: (440, 25)
+Group distribution: Study.Group
+D    172
+H    137
+C    131
+Name: count, dtype: int64
+Best hyperparameters: {'activation': 'relu', 'alpha': 0.01, 'hidden_layer_sizes': (100, 100), 'learning_rate': 'adaptive', 'solver': 'adam'}
+Best score: 0.34415946150324783
+Best model: MLPClassifier(alpha=0.01, hidden_layer_sizes=(100, 100),
+              learning_rate='adaptive')
+Accuracy: 0.4954545454545455
+Precision: 0.49854891490538406
+Recall: 0.4954545454545455
+F1: 0.4868505399780976
+ROC AUC: 0.6783650219644483
+Confusion matrix:
+[[ 67  50  14]
+ [ 37 107  28]
+ [ 29  64  44]]
+Classification report:
+              precision    recall  f1-score   support
+
+           C       0.50      0.51      0.51       131
+           D       0.48      0.62      0.54       172
+           H       0.51      0.32      0.39       137
+
+    accuracy                           0.50       440
+   macro avg       0.50      0.48      0.48       440
+weighted avg       0.50      0.50      0.49       440
+

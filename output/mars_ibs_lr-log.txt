@@ -1,0 +1,29 @@
+Genera shape: (440, 2896)
+Metadata shape: (440, 6)
+MTB shape: (440, 25)
+Group distribution: Study.Group
+D    172
+H    137
+C    131
+Name: count, dtype: int64
+Best hyperparameters: {'C': 10, 'class_weight': None, 'max_iter': 100, 'penalty': 'l2', 'random_state': 42, 'solver': 'saga', 'tol': 0.0001}
+Best score: 0.3176533718216805
+Best model: LogisticRegression(C=10, random_state=42, solver='saga')
+Accuracy: 0.4090909090909091
+Precision: 0.4122005911561037
+Recall: 0.4090909090909091
+F1: 0.35586840223150423
+ROC AUC: 0.6041482718406603
+Confusion matrix: [[ 27  93  11]
+ [ 21 134  17]
+ [ 15 103  19]]
+Classification report:               precision    recall  f1-score   support
+
+           C       0.43      0.21      0.28       131
+           D       0.41      0.78      0.53       172
+           H       0.40      0.14      0.21       137
+
+    accuracy                           0.41       440
+   macro avg       0.41      0.37      0.34       440
+weighted avg       0.41      0.41      0.36       440
+
