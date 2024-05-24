@@ -53,7 +53,7 @@ python main.py --path "path/to/data" --study "mars_ibs_lr" --output "../output" 
 |:-----------------:|:------------------:|
 |       Model       |Logisticregression, RandomForest, ML-based classifiers (future)|
 |Feature Engineering| PCA, LDA, $\chi^2$ |
-|Biomarker detection (future)| Graph Convolutional Networks, model-based|
+|Biomarker detection| Graph Convolutional Networks, model-based (LR)|
 
 ### Data
 The datasets were obtained from [this repository](https://github.com/borenstein-lab/microbiome-metabolome-curated-data/tree/main).
