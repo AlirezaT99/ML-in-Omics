@@ -21,7 +21,7 @@ First, the configuration for the study must be available in the [configuration f
 
 ```python
 'mars_ibs_lr': {
-    'path': 'MARS_IBS_2020',
+    'dir': 'MARS_IBS_2020',
     'preprocessor': PC,
     'preproc_kwargs': {'var': 0.9},
     'classifier': LogisticRegression,
@@ -47,7 +47,6 @@ python main.py --path "path/to/data" --study "mars_ibs_lr" --output "../output" 
 ### Goals
 - Integration of Metabolomics and Metagenomics data for more accurate biomarker identification
 - Comparison of Metabolomics and Metagenomics in disease status prediction
-- 
 
 ### Summary
 | Aspect | Value|
@@ -57,9 +56,7 @@ python main.py --path "path/to/data" --study "mars_ibs_lr" --output "../output" 
 |Biomarker detection (future)| Graph Convolutional Networks, model-based|
 
 ### Data
-
-### Results
-
+The datasets were obtained from [this repository](https://github.com/borenstein-lab/microbiome-metabolome-curated-data/tree/main).
 
 ## Authors
 Alexandra Gorbonos
